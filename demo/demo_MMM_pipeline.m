@@ -16,6 +16,7 @@ gcp; % start a parallel engine
 
 
 %% Data in Brief
+ccc
 
 % load
 load('jointsCON.mat')
@@ -41,6 +42,7 @@ firstBatch = true;
 currentImage = 0;
 
 for g = 1:size(jointsCON,2)
+% for g = 1 : 3
     for i = 1:size(jointsCON{1,g},1)
         fprintf(1,['Processing data for mouse ' num2str(i) ' from group_' num2str(g) '\n']);
         for j = 1:size(jointsCON{1,g},2)
@@ -124,8 +126,8 @@ parameters.maxF = maxF;
 numPerDataSet = parameters.trainingSetSize;
 numPoints = 5000;
 
-%% check parameters on single session
-g=7; i=1; j=3;
+% check parameters on single session
+g=2; i=1; j=3;
 
 % calculate distances from body part positions
 p1 = jointsCON{1,g}{i,j};
@@ -183,7 +185,7 @@ title('Wavelets for training')
 %% Run parameters on full data set
 dataAll = [];
 
-for g = 7 %1:size(jointsCON,2)
+for g = 1:3%1:size(jointsCON,2)
     for i = 1:size(jointsCON{1,g},1)
         fprintf(1,['Processing data for mouse ' num2str(i) ' from group_' num2str(g) '\n']);
         for j = 1:size(jointsCON{1,g},2)
@@ -229,6 +231,8 @@ for g = 7 %1:size(jointsCON,2)
                 dataAll = [dataAll; signalData];
                 
             else
+                disp( 'skipping empty cell array.' )
+                
             end
         end
     end
@@ -246,4 +250,5 @@ tic
 C200 = kmeans(dataAll,200,'Replicates',10);
 toc
 
+scatter( ydata( :, 1 ), ydata( :, 2 ), 6, C100 )
 save('trainingSet_demo.mat','dataAll','ydata','C100','C200');
